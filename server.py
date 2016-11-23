@@ -35,7 +35,7 @@ class EventList(Resource):
         if args['offset']!=None: offset = args['offset']
         if args['limit']!=None and args['limit'] < PAGE_LIMIT: limit = args['limit']
         sess = orm.get_session()
-        q = sess.query(Event).order_by(Event.time).offset(offset).limit(limit)
+        q = sess.query(Event).offset(offset).limit(limit)
         result = default_ok_result.copy()
         result.update({'offset': offset, 'count': q.count(), 'results': [e.getDict() for e in q.all()]})
         return result
