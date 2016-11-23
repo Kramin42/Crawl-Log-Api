@@ -9,7 +9,7 @@ SQLALCHEMY_DATABASE_URI = "sqlite:///pubsub.db"
 
 Base = declarative_base()
 
-class TypeEnum(enum.Enum):
+class EventType(enum.Enum):
     game = 'game'
     milestone = 'milestone'
 
@@ -18,7 +18,7 @@ class TypeEnum(enum.Enum):
 class Event(Base):
     __tablename__ = 'event'
     id = Column(Integer, primary_key=True)
-    type = Column(Enum(TypeEnum), nullable=False)
+    type = Column(Enum(EventType), nullable=False)
     data = Column(Text, nullable=False)
     time = Column(DateTime, nullable=False)
     src_abbr = Column(String(10), nullable=False)

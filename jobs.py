@@ -1,5 +1,5 @@
 import orm
-from orm import Event, Logfile, TypeEnum
+from orm import Event, Logfile, EventType
 import sources
 import os
 import logging
@@ -35,21 +35,21 @@ def refresh(sources_file, sources_dir):
                                 data = utils.logline_to_dict(line)
                                 if not ('type' in data and data['type'] == 'crash'):
                                     if 'milestone' in data:
-                                        event = Event(type=TypeEnum.milestone,
+                                        event = Event(type=EventType.milestone,
                                                       data=json.dumps(data),
                                                       time=utils.crawl_date_to_datetime(data['time']),
                                                       src_abbr=src.name,
                                                       src_url=source_urls[src.name])
                                     else:
-                                        event = Event(type=TypeEnum.game,
+                                        event = Event(type=EventType.game,
                                                       data=json.dumps(data),
                                                       time=utils.crawl_date_to_datetime(data['end']),
                                                       src_abbr=src.name,
                                                       src_url=source_urls[src.name])
                                     sess.add(event)
                             except KeyError as e:
-                                logging.error('key {} not found in {}'.format(e, data))
-                            except Exception as e: # how scandelous!
+                                logging.error('key {} not found'.format(e))
+                            except Exception as e: # how scandelous! Don't want one broken line to break everything
                                 logging.exception('Something unexpected happened, skipping this event')
                         logfile.offset = f.tell()
                     sess.commit()

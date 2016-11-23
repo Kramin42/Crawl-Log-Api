@@ -1,5 +1,5 @@
 import orm
-from orm import Event, Logfile, TypeEnum
+from orm import Event, Logfile, EventType
 from api import EventList
 import sources
 import os
