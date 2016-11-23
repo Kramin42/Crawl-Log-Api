@@ -31,8 +31,8 @@ def refresh(sources_file, sources_dir):
                         logging.debug('offset: {}'.format(logfile.offset))
                         f.seek(logfile.offset)
                         for line in f:
-                            data = utils.logline_to_dict(line)
                             try:
+                                data = utils.logline_to_dict(line)
                                 if not ('type' in data and data['type'] == 'crash'):
                                     if 'milestone' in data:
                                         event = Event(type=TypeEnum.milestone,
