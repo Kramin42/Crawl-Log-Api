@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import enum
+import json
 
 SQLALCHEMY_DATABASE_URI = "sqlite:///pubsub.db"
 
@@ -25,6 +26,13 @@ class Event(Base):
 
     def __repr__(self):
         return "<Event(id={event.id}, type={event.type}, time={event.time}, src_abbr={event.src_abbr}, src_url={event.src_url}, data={event.data})>".format(event=self)
+
+    def getDict(self):
+        return {'type': self.type.value,
+                'data': json.loads(self.data),
+                'time': self.time.strftime('%s'),
+                'src_abbr': self.src_abbr,
+                'src_url': self.src_url}
 
 class Logfile(Base):
     __tablename__ = 'logfile'

@@ -6,14 +6,45 @@ import logging
 import time
 import json
 import utils
-from datetime import datetime
+from flask import Flask
+from flask_restful import Resource, Api, reqparse
+
+# settings TODO: move to settings file
+SOURCES_FILE = 'sources.yml'
+SOURCES_DIR = './sources'
+PAGE_LIMIT = 1000
 
 logging.basicConfig(level=logging.DEBUG)
 
-SOURCES_FILE = 'sources.yml'
-SOURCES_DIR = './sources'
+app = Flask(__name__)
 
+# API section
+api = Api(app)
+
+parser = reqparse.RequestParser()
+parser.add_argument('offset', type=int)
+parser.add_argument('limit', type=int)
+
+default_ok_result = {'status': 200, 'message': 'OK'}
+
+class EventList(Resource):
+    def get(self):
+        offset = 0
+        limit = PAGE_LIMIT
+        args = parser.parse_args()
+        if args['offset']!=None: offset = args['offset']
+        if args['limit']!=None and args['limit'] < PAGE_LIMIT: limit = args['limit']
+        sess = orm.get_session()
+        q = sess.query(Event).order_by(Event.time).offset(offset).limit(limit)
+        result = default_ok_result.copy()
+        result.update({'offset': offset, 'count': q.count(), 'results': [e.getDict() for e in q.all()]})
+        return result
+
+api.add_resource(EventList, '/event')
+
+# fetch newest data into the DB
 def refresh():
+    sess = orm.get_session()
     source_urls = sources.source_urls(SOURCES_FILE)
 
     t_i = time.time()
@@ -58,9 +89,9 @@ def refresh():
     sess.commit()
 
 if __name__=='__main__':
-    sess = orm.get_session()
-
     if not os.path.isfile(SOURCES_FILE):
         sources_file = 'sources_default.yml'
 
     refresh()
+
+    app.run(debug=True)
