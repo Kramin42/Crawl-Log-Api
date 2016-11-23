@@ -49,6 +49,8 @@ def refresh(sources_file, sources_dir):
                                     sess.add(event)
                             except KeyError as e:
                                 logging.error('key {} not found in {}'.format(e, data))
+                            except Exception as e: # how scandelous!
+                                logging.exception('Something unexpected happened, skipping this event')
                         logfile.offset = f.tell()
                     sess.commit()
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))

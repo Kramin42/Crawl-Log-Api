@@ -4,10 +4,9 @@ import datetime
 
 def logline_to_dict(logline: str) -> dict:
     data = {}
-    logline = logline.replace('::','$COLON$').strip()
-    pairs = re.split(':', logline)
+    pairs = re.split('(?<!:):(?!:)', logline.strip())
     for p in pairs:
-        p = p.replace('$COLON$',':')
+        p = p.replace('::',':')
         keyval = p.split('=')
         try:
             data[keyval[0]] = keyval[1]
