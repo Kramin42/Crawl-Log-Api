@@ -1,12 +1,6 @@
-import orm
-from orm import Event, Logfile, EventType
 from api import EventList
-import sources
 import os
 import logging
-import time
-import json
-import utils
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from flask_apscheduler import APScheduler
