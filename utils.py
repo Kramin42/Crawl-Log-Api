@@ -9,7 +9,10 @@ def logline_to_dict(logline: str) -> dict:
     for p in pairs:
         p = p.replace('$COLON$',':')
         keyval = p.split('=')
-        data[keyval[0]] = keyval[1]
+        try:
+            data[keyval[0]] = keyval[1]
+        except IndexError as e:
+            logging.error('error "{}" in keyval "{}", logline "{}"'.format(e,keyval,logline))
     return data
 
 def crawl_date_to_datetime(d: str) -> datetime.datetime:

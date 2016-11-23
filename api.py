@@ -1,0 +1,22 @@
+import orm
+from orm import Event
+from flask_restful import Resource, Api, reqparse
+
+parser = reqparse.RequestParser()
+parser.add_argument('offset', type=int)
+parser.add_argument('limit', type=int)
+
+default_ok_result = {'status': 200, 'message': 'OK'}
+
+class EventList(Resource):
+    def get(self):
+        offset = 0
+        limit = 1000
+        args = parser.parse_args()
+        if args['offset']!=None: offset = args['offset']
+        if args['limit']!=None and args['limit'] < 1000: limit = args['limit']
+        sess = orm.get_session()
+        q = sess.query(Event).offset(offset).limit(limit)
+        result = default_ok_result.copy()
+        result.update({'offset': offset, 'count': q.count(), 'results': [e.getDict() for e in q.all()]})
+        return result
