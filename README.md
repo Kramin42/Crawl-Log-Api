@@ -9,7 +9,7 @@ Then you can start it with:
 
     python server.py
 
-By default, it loads config_default.yml which is set todownload all the files
+By default, it loads config_default.yml which is set to download all the files
 from servers listed in sources_default.yml. To override this, copy config_default.yml
 to config.yml and then edit, linking potentially other sources.yml files.
 

@@ -57,7 +57,7 @@ def refresh(sources_file, sources_dir, socketio):
                         logfile.offset = f.tell()
                     sess.commit()
 
-    if len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
+    if len(new_events)>0 and len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
         socketio.emit('crawlevent', json.dumps(new_events))
 
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))
