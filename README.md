@@ -14,6 +14,7 @@ from servers listed in sources_default.yml. To override this, copy config_defaul
 to config.yml and then edit, linking potentially other sources.yml files.
 
 example config.yml:
+
     refresh schedule:
       - sources file: sources_lowprio.yml
         interval: 120
