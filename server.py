@@ -1,51 +1,43 @@
 from api import EventList
 import os
 import logging
+import yaml
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 
+logging.basicConfig(level=logging.INFO)
+
 app = Flask(__name__)
 socketio = SocketIO(app)
 api = Api(app)
 
-# settings TODO: move to settings file
-SOURCES_FILE = 'sources.yml'
 SOURCES_DIR = './sources'
+CONFIG_FILE = 'config.yml'
+if not os.path.isfile(CONFIG_FILE):
+    CONFIG_FILE = 'config_default.yml'
 
-if not os.path.isfile(SOURCES_FILE):
-    SOURCES_FILE = 'sources_default.yml'
+CONFIG = yaml.safe_load(open(CONFIG_FILE, encoding='utf8'))
 
-logging.basicConfig(level=logging.INFO)
-
-class Config(object):
-    JOBS = [
-        # {
-        #     'id': 'socketiotest',
-        #     'func': 'jobs:socketiotest',
-        #     'args': (socketio,),
-        #     'trigger': 'interval',
-        #     'seconds': 10,
-        #     'max_instances': 1,
-        #     'coalesce': True
-        # },
-        {
-            'id': 'refresh',
-            'func': 'jobs:refresh',
-            'args': (SOURCES_FILE, SOURCES_DIR, socketio),
-            'trigger': 'interval',
-            'seconds': 30,
-            'max_instances': 1,
-            'coalesce': True
-        }
-    ]
-
-app.config.from_object(Config())
+app.config['JOBS'] = []
+for job in CONFIG['refresh schedule']:
+    app.config['JOBS'].append({
+        'id': 'refresh '+job['sources file'],
+        'func': 'jobs:refresh',
+        'args': (job['sources file'], SOURCES_DIR, socketio),
+        'trigger': 'interval',
+        'seconds': job['interval'],
+        'max_instances': 1,
+        'coalesce': True
+    })
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return """A PubSub utility for crawl milestones
+    <a href="https://github.com/Kramin42/Crawl-PubSub">Source/Documentation</a><br/>
+    <a href="/socketiotest">Live milestone example</a>
+    """
 
 @app.route('/socketiotest')
 def socketiotest():

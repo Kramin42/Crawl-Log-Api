@@ -1,0 +1,3 @@
+refresh schedule:
+  - sources file: sources_default.yml
+    interval: 30
