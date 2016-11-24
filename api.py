@@ -20,8 +20,7 @@ class EventList(Resource):
         sess = orm.get_session()
         q = sess.query(Event)
         if args['type']!=None: q = q.filter_by(type=args['type'])
-        total = q.count()
         q = q.offset(offset).limit(limit)
         result = default_ok_result.copy()
-        result.update({'total': total, 'offset': offset, 'results': [e.getDict() for e in q.all()]})
+        result.update({'offset': offset, 'results': [e.getDict() for e in q.all()]})
         return result
