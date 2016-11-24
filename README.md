@@ -26,7 +26,7 @@ e.g.
 
 ## Realtime Events
 Connect to the server with socket.io to receive data of new milestones in reatime.
-An example html document which will add the events to a list as they come in
+Example html/js which will add the events to a list as they come in
 (replace `http://www.example.com` with the server address):
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>

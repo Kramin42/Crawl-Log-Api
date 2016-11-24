@@ -53,18 +53,14 @@ def socketiotest():
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('connect', function() {
-            document.getElementById("eventlist").innerHTML+="<li>connected</li>";
-        });
         socket.on('crawlevent', function(data) {
-            console.log('got crawlevent');
             data = JSON.parse(data);
             data.forEach(function(event) {
                 document.getElementById("eventlist").innerHTML+="<li>"+JSON.stringify(event)+"</li>";
             });
         });
     </script>
-    <body><ul id="eventlist"></ul></body>
+    <ul id="eventlist"></ul>
     """
 
 api.add_resource(EventList, '/event')
