@@ -15,6 +15,8 @@ def refresh(sources_file, sources_dir, socketio):
 
     sources.download_sources(sources_file, sources_dir)
 
+    new_events = []
+
     for src in os.scandir(sources_dir):
         if not src.is_file():
             logging.debug('scanning {} files'.format(src.name))
@@ -47,12 +49,17 @@ def refresh(sources_file, sources_dir, socketio):
                                                       src_abbr=src.name,
                                                       src_url=source_urls[src.name])
                                     sess.add(event)
+                                    new_events.append(event.getDict())
                             except KeyError as e:
                                 logging.error('key {} not found'.format(e))
                             except Exception as e: # how scandelous! Don't want one broken line to break everything
                                 logging.exception('Something unexpected happened, skipping this event')
                         logfile.offset = f.tell()
                     sess.commit()
+
+    if len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
+        socketio.emit('crawlevent', json.dumps(new_events))
+
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))
 
 def socketiotest(socketio):

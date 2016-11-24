@@ -21,6 +21,15 @@ logging.basicConfig(level=logging.INFO)
 
 class Config(object):
     JOBS = [
+        # {
+        #     'id': 'socketiotest',
+        #     'func': 'jobs:socketiotest',
+        #     'args': (socketio,),
+        #     'trigger': 'interval',
+        #     'seconds': 10,
+        #     'max_instances': 1,
+        #     'coalesce': True
+        # },
         {
             'id': 'refresh',
             'func': 'jobs:refresh',
@@ -29,16 +38,7 @@ class Config(object):
             'seconds': 30,
             'max_instances': 1,
             'coalesce': True
-        },
-        {
-            'id': 'socketiotest',
-            'func': 'jobs:socketiotest',
-            'args': (socketio,),
-            'trigger': 'interval',
-            'seconds': 10,
-            'max_instances': 1,
-            'coalesce': True
-        },
+        }
     ]
 
 app.config.from_object(Config())
@@ -55,7 +55,6 @@ def socketiotest():
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('connect', function() {
             document.getElementById("eventlist").innerHTML+="<li>connected</li>";
-            socket.emit('connectedconfirm', {data: 'I\'m connected!'});
         });
         socket.on('crawlevent', function(data) {
             console.log('got crawlevent');
