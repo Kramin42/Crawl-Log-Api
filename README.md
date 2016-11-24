@@ -9,8 +9,16 @@ Then you can start it with:
 
     python server.py
 
-By default, it will download all the files from servers listed in sources_default.yml.
-To override this, copy sources_default.yml to sources.yml and then edit.
+By default, it loads config_default.yml which is set todownload all the files
+from servers listed in sources_default.yml. To override this, copy config_default.yml
+to config.yml and then edit, linking potentially other sources.yml files.
+
+example config.yml:
+    refresh schedule:
+      - sources file: sources_lowprio.yml
+        interval: 120
+      - sources file: sources_hiprio.yml
+        interval: 12
 
 ## Web API
 The API has one endpoint, `/event`, with optional parameters:
