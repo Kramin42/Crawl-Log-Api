@@ -8,7 +8,7 @@ import json
 import utils
 
 # fetch newest data into the DB
-def refresh(sources_file, sources_dir):
+def refresh(sources_file, sources_dir, socketio):
     t_i = time.time()
     sess = orm.get_session()
     source_urls = sources.source_urls(sources_file)
@@ -54,3 +54,6 @@ def refresh(sources_file, sources_dir):
                         logfile.offset = f.tell()
                     sess.commit()
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))
+
+def socketiotest(socketio):
+    socketio.emit('crawlevent','[{"data": "test1"},{"data": "test2"}]')

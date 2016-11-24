@@ -3,4 +3,5 @@ Flask
 Flask-APScheduler
 Flask-RESTful
 Flask-SQLAlchemy
+Flask-SocketIO
 PyYAML
