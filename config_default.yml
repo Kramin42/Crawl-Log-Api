@@ -1,3 +1,5 @@
+host: 127.0.0.1
+port: 5000
 refresh schedule:
   - sources file: sources_default.yml
     interval: 30

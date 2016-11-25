@@ -13,8 +13,10 @@ By default, it loads config_default.yml which is set to download all the files
 from servers listed in sources_default.yml. To override this, copy config_default.yml
 to config.yml and then edit, linking potentially other sources.yml files.
 
-example config.yml:
+example production config.yml:
 
+    host: 0.0.0.0
+    port: 80
     refresh schedule:
       - sources file: sources_lowprio.yml
         interval: 120

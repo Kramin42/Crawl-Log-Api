@@ -34,7 +34,7 @@ for job in CONFIG['refresh schedule']:
 
 @app.route('/')
 def hello_world():
-    return """A PubSub utility for crawl milestones
+    return """A PubSub utility for crawl milestones<br/>
     <a href="https://github.com/Kramin42/Crawl-PubSub">Source/Documentation</a><br/>
     <a href="/socketiotest">Live milestone example</a>
     """
@@ -45,6 +45,9 @@ def socketiotest():
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+            document.getElementById("eventlist").innerHTML+="<li>connected</li>";
+        });
         socket.on('crawlevent', function(data) {
             data = JSON.parse(data);
             data.forEach(function(event) {
@@ -62,5 +65,4 @@ if __name__=='__main__':
         sched = APScheduler()
         sched.init_app(app)
         sched.start()
-    socketio.run(app)
-    app.run(debug=True)
+    app.run(host=CONFIG['host'], port=CONFIG['port'])
