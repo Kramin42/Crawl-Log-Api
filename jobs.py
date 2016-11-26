@@ -49,7 +49,7 @@ def refresh(sources_file, sources_dir, socketio):
                                                       src_abbr=src.name,
                                                       src_url=source_urls[src.name])
                                     sess.add(event)
-                                    new_events.append(event.getDict())
+                                    new_events.append(event)
                             except KeyError as e:
                                 logging.error('key {} not found'.format(e))
                             except Exception as e: # how scandelous! Don't want one broken line to break everything
@@ -58,7 +58,7 @@ def refresh(sources_file, sources_dir, socketio):
                     sess.commit()
 
     if len(new_events)>0 and len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
-        socketio.emit('crawlevent', json.dumps(new_events))
+        socketio.emit('crawlevent', json.dumps([e.getDict() for e in new_events]))
 
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))
 

@@ -1,3 +1,5 @@
+from calendar import timegm
+
 from sqlalchemy import Column, Integer, Enum, Sequence, Text, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -28,9 +30,10 @@ class Event(Base):
         return "<Event(id={event.id}, type={event.type}, time={event.time}, src_abbr={event.src_abbr}, src_url={event.src_url}, data={event.data})>".format(event=self)
 
     def getDict(self):
-        return {'type': self.type.value,
+        return {'id': self.id,
+                'type': self.type.value,
                 'data': json.loads(self.data),
-                'time': self.time.strftime('%s'),
+                'time': timegm(self.time.timetuple()),
                 'src_abbr': self.src_abbr,
                 'src_url': self.src_url}
 

@@ -1,6 +1,7 @@
 import re
 import logging
 import datetime
+import pytz
 
 def logline_to_dict(logline: str) -> dict:
     data = {}
@@ -27,4 +28,5 @@ def crawl_date_to_datetime(d: str) -> datetime.datetime:
         day=int(d[6:8]),
         hour=int(d[8:10]),
         minute=int(d[10:12]),
-        second=int(d[12:14]))
+        second=int(d[12:14]),
+        tzinfo=pytz.utc)
