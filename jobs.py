@@ -16,6 +16,7 @@ def refresh(sources_file, sources_dir, socketio):
     sources.download_sources(sources_file, sources_dir)
 
     new_events = []
+    too_many_new_events = False
 
     for src in os.scandir(sources_dir):
         if not src.is_file():
@@ -32,6 +33,7 @@ def refresh(sources_file, sources_dir, socketio):
                     with open(logfile.path) as f:
                         logging.debug('offset: {}'.format(logfile.offset))
                         f.seek(logfile.offset)
+                        iter=0
                         for line in f:
                             try:
                                 data = utils.logline_to_dict(line)
@@ -49,15 +51,22 @@ def refresh(sources_file, sources_dir, socketio):
                                                       src_abbr=src.name,
                                                       src_url=source_urls[src.name])
                                     sess.add(event)
-                                    new_events.append(event)
+                                    if len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
+                                        new_events.append(event)
+                                    else:
+                                        too_many_new_events = True
                             except KeyError as e:
                                 logging.error('key {} not found'.format(e))
                             except Exception as e: # how scandelous! Don't want one broken line to break everything
                                 logging.exception('Something unexpected happened, skipping this event')
+                            iter+= 1
+                            logfile.offset+= len(line)
+                            if iter%1000==0: #don't spam commits
+                                sess.commit()
                         logfile.offset = f.tell()
-                    sess.commit()
+                        sess.commit()
 
-    if len(new_events)>0 and len(new_events)<100: # don't want to do huge sends over sockets TODO: make a config option
+    if len(new_events)>0 and not too_many_new_events:
         socketio.emit('crawlevent', json.dumps([e.getDict() for e in new_events]))
 
     logging.info('Refreshed in {} seconds'.format(time.time() - t_i))

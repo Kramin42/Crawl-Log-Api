@@ -7,10 +7,8 @@ from flask_restful import Resource, Api, reqparse
 from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 
-logging.basicConfig(level=logging.INFO)
-
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app, engineio_logger=True)
 api = Api(app)
 
 SOURCES_DIR = './sources'
@@ -61,6 +59,10 @@ def socketiotest():
 api.add_resource(EventList, '/event')
 
 if __name__=='__main__':
+    logging.basicConfig(level=logging.INFO)
+    #for handler in logging.root.handlers:
+    #    handler.addFilter(logging.Filter('engineio'))
+
     if os.environ.get('WERKZEUG_RUN_MAIN') != 'true': # don't run again when werkzeug reloads due to files changing
         sched = APScheduler()
         sched.init_app(app)
