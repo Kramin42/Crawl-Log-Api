@@ -1,0 +1,115 @@
+sources:
+  - name: cao
+    base: http://crawl.akrasiac.org
+
+    # If the file exists in this path, it will be linked into the data
+    # directory from the local path; otherwise it will be fetched
+    # using http.
+    local: /var/www
+
+    # Timezones are used if this server had games prior to Crawl using
+    # only UTC in the logfile.
+    timezones:
+      D: '-0400'
+      S: '-0500'
+
+    utc-epoch: '20080807033000+0000'
+
+    # Annotations: standard glob {} expansion is applied. Files
+    # flagged * are assumed to be logfiles that are currently being
+    # updated and will be refetched, always. Files without * are
+    # assumed to be dead versions, and will be fetched only if the
+    # local copy is missing.
+    logs:
+      - allgames.txt
+      - milestones02
+      - milestones03
+      - '{logfile,milestones}{04,05,06}'
+      - '{logfile,milestones}{07,08}'
+      - '{logfile,milestones}09'
+      - '{logfile,milestones}10'
+      - '{logfile,milestones}{11,12,13,14,15}'
+      - '{logfile,milestones}{16,17,18}'
+
+  - name: cdo
+    base: http://crawl.develz.org
+    utc-epoch: '20080807033000+0000'
+    timezones:
+      D: '+0200'
+      S: '+0100'
+    logs:
+      - '{allgames,milestones}-0.{3,4,5,6}.txt'
+      - '{allgames,milestones}-0.7.txt'
+      - '{allgames,milestones}-{0.16,0.17,0.18}.txt'
+      - '{allgames,milestones}-0.{8,10,11,12,13,14,15}.txt'
+
+  - name: cszo
+    aliases:
+      - cßo
+    base: http://dobrazupa.org
+    logs:
+      - meta/{git,0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}
+      - meta/{0.16,0.17}/{logfile,milestones}
+
+  - name: csn
+    base: http://crawlus.somatika.net
+    logs:
+      - scoring/crawl-{trunk,0.11}/{logfile,milestones}
+
+  - name: rhf
+    base: http://rl.heh.fi/
+    logs:
+      - remote.rhf-{logfile,milestones}-{0.5,0.6,0.7,trunk}
+      - meta/crawl-0.12/{logfile,milestones}
+      - meta/crawl-git/{logfile,milestones}
+
+  - name: cue
+    aliases:
+      - cln
+      - clan
+    base: http://underhound.eu:81/crawl/meta
+    logs:
+      - '{0.16,0.17,0.18}/{logfile,milestones}'
+      - '{0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}'
+
+  - name: ckr
+    base: http://kr.dobrazupa.org
+    logs:
+      - www/{trunk,0.15,0.13}/{logfile,milestones}
+      - www/0.14/{logfile,milestone}
+
+  - name: cwz
+    base: http://webzook.net/soup
+    logs:
+      - '0.16/{logfile,milestones}-old'
+      - '{0.13,0.14,0.15,0.16,0.17,0.18}/{logfile,milestones}'
+
+  - name: cbro
+    aliases:
+      - cbo
+    base: http://crawl.berotato.org/crawl
+    logs:
+      - meta/{0.15,0.14,0.13}/{logfile,milestones}
+      - meta/{0.16,0.17,0.18}/{logfile,milestones}
+
+  - name: cxc
+    base: http://crawl.xtahua.com/crawl/meta
+    logs:
+      - '{0.14,0.15}/{logfile,milestones}'
+      - '{0.16,0.17,0.18}/{logfile,milestones}'
+
+  - name: lld
+    base: http://lazy-life.ddo.jp/mirror/meta
+    logs:
+      - '{0.14}/{logfile,milestones}'
+      - '{0.15,0.16,0.17,0.18}/{logfile,milestones}'
+
+  - name: cpo
+    base: https://crawl.project357.org
+    logs:
+      - dcss-{milestones,logfiles}-{0.15,0.16,0.17,0.18}
+
+  - name: cjr
+    base: https://crawl.jorgrun.rocks/meta
+    logs:
+      - '{0.17,0.18,}/{milestones,logfile}'

@@ -1,0 +1,70 @@
+sources:
+  - name: cao
+    base: http://crawl.akrasiac.org
+
+    # Timezones are used if this server had games prior to Crawl using
+    # only UTC in the logfile.
+    timezones:
+      D: '-0400'
+      S: '-0500'
+
+    utc-epoch: '20080807033000+0000'
+
+    # Annotations: standard glob {} expansion is applied. Files
+    # flagged * are assumed to be logfiles that are currently being
+    # updated and will be refetched, always. Files without * are
+    # assumed to be dead versions, and will be fetched only if the
+    # local copy is missing.
+    logs:
+      - '{logfile,milestones}-git*'
+      - '{logfile,milestones}19*'
+
+  - name: cdo
+    base: http://crawl.develz.org
+    utc-epoch: '20080807033000+0000'
+    timezones:
+      D: '+0200'
+      S: '+0100'
+    logs:
+      - '{allgames,milestones}-0.19.txt*'
+      - '{allgames,milestones}-svn.txt*'
+
+  - name: cue
+    aliases:
+      - cln
+      - clan
+    base: http://underhound.eu:81/crawl/meta
+    logs:
+      - '{0.19,git}/{logfile,milestones}*'
+
+  - name: cwz
+    base: http://webzook.net/soup
+    logs:
+      - '{0.19,trunk}/{logfile,milestones}*'
+
+  - name: cbro
+    aliases:
+      - cbo
+    base: http://crawl.berotato.org/crawl
+    logs:
+      - meta/{0.19,git}/{logfile,milestones}*
+
+  - name: cxc
+    base: http://crawl.xtahua.com/crawl/meta
+    logs:
+      - '{0.19,git}/{logfile,milestones}*'
+
+  - name: lld
+    base: http://lazy-life.ddo.jp/mirror/meta
+    logs:
+      - '{0.19,trunk}/{logfile,milestones}*'
+
+  - name: cpo
+    base: https://crawl.project357.org
+    logs:
+      - dcss-{milestones,logfiles}-{trunk,0.19}*
+
+  - name: cjr
+    base: https://crawl.jorgrun.rocks/meta
+    logs:
+      - '{0.19,git}/{milestones,logfile}*'
