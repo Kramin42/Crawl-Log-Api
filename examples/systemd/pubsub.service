@@ -1,0 +1,7 @@
+Description=Crawl PubSub
+
+[Service]
+ExecStart=/app/pubsub/examples/run.sh
+
+[Install]
+WantedBy=multi-user.target
