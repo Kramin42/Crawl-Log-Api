@@ -16,9 +16,13 @@ CONFIG_FILE = 'config.yml'
 if not os.path.isfile(CONFIG_FILE):
     CONFIG_FILE = 'config_default.yml'
 
-logging.basicConfig(level=logging.INFO, filename='./server.log', filemode='a')
-
 CONFIG = yaml.safe_load(open(CONFIG_FILE, encoding='utf8'))
+
+logging_level = logging.NOTSET
+if 'logging level' in CONFIG and hasattr(logging, CONFIG['logging level']):
+    logging_level = getattr(logging, CONFIG['logging level'])
+
+logging.basicConfig(level=logging_level, filename='./server.log', filemode='a')
 
 app.config['JOBS'] = []
 for job in CONFIG['refresh schedule']:
