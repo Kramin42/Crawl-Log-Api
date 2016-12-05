@@ -24,7 +24,7 @@ class EventList(Resource):
         with orm.get_session() as sess:
             q = sess.query(Event)
             if args['type']!=None: q = q.filter_by(type=args['type'])
-            q = q.where(Event.id > offset)
+            q = q.filter(Event.id > offset)
             q = q.limit(limit)
             result = default_ok_result.copy()
             es = q.all()
