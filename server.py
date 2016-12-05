@@ -22,7 +22,7 @@ logging_level = logging.NOTSET
 if 'logging level' in CONFIG and hasattr(logging, CONFIG['logging level']):
     logging_level = getattr(logging, CONFIG['logging level'])
 
-logging.basicConfig(level=logging_level, filename='./server.log', filemode='a')
+logging.basicConfig(level=logging_level)
 
 app.config['JOBS'] = []
 for job in CONFIG['refresh schedule']:
