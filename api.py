@@ -18,9 +18,10 @@ class EventList(Resource):
         if args['offset']!=None: offset = args['offset']
         if args['limit']!=None and args['limit'] < 1000: limit = args['limit'] # TODO: make  max limit a config option
         sess = orm.get_session()
-        q = sess.query(Event)
-        if args['type']!=None: q = q.filter_by(type=args['type'])
-        q = q.offset(offset).limit(limit)
-        result = default_ok_result.copy()
-        result.update({'offset': offset, 'next_offset': offset+q.count(), 'results': [e.getDict() for e in q.all()]})
+        with orm.get_session() as sess:
+            q = sess.query(Event)
+            if args['type']!=None: q = q.filter_by(type=args['type'])
+            q = q.offset(offset).limit(limit)
+            result = default_ok_result.copy()
+            result.update({'offset': offset, 'next_offset': offset+q.count(), 'results': [e.getDict() for e in q.all()]})
         return result
