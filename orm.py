@@ -22,7 +22,7 @@ class EventType(enum.Enum):
 class Event(Base):
     __tablename__ = 'event'
     id = Column(Integer, primary_key=True)
-    type = Column(Enum(EventType), nullable=False)
+    type = Column(Enum(EventType), nullable=False, index=True)
     data = Column(Text, nullable=False)
     time = Column(DateTime, nullable=False)
     src_abbr = Column(String(10), nullable=False)
