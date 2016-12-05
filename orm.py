@@ -3,7 +3,9 @@ from calendar import timegm
 from sqlalchemy import Column, Integer, Enum, Sequence, Text, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
+from contextlib import contextmanager
 import enum
 import json
 
@@ -49,9 +51,11 @@ class Logfile(Base):
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 
-session = sessionmaker(expire_on_commit=False, autocommit=False)
-session.configure(bind=engine)
+session_factory = sessionmaker(bind=engine, expire_on_commit=False, autocommit=False)
 Base.metadata.create_all(engine)
 
+@contextmanager
 def get_session():
-    return session()
+    Session = scoped_session(session_factory)
+    yield Session()
+    Session.remove()
