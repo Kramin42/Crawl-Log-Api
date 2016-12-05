@@ -24,12 +24,7 @@ sources:
       - allgames.txt
       - milestones02
       - milestones03
-      - '{logfile,milestones}{04,05,06}'
-      - '{logfile,milestones}{07,08}'
-      - '{logfile,milestones}09'
-      - '{logfile,milestones}10'
-      - '{logfile,milestones}{11,12,13,14,15}'
-      - '{logfile,milestones}{16,17,18}'
+      - '{logfile,milestones}{04,05,06,07,08,09,10,11,12,13,14,15,16,17,18}'
 
   - name: cdo
     base: http://crawl.develz.org
@@ -38,18 +33,14 @@ sources:
       D: '+0200'
       S: '+0100'
     logs:
-      - '{allgames,milestones}-0.{3,4,5,6}.txt'
-      - '{allgames,milestones}-0.7.txt'
-      - '{allgames,milestones}-{0.16,0.17,0.18}.txt'
-      - '{allgames,milestones}-0.{8,10,11,12,13,14,15}.txt'
+      - '{allgames,milestones}-0.{3,4,5,6,7,8,10,11,12,13,14,15,16,17,18}.txt'
 
   - name: cszo
     aliases:
       - cßo
     base: http://dobrazupa.org
     logs:
-      - meta/{git,0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}
-      - meta/{0.16,0.17}/{logfile,milestones}
+      - meta/{git,0.16,0.17,0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}
 
   - name: csn
     base: http://crawlus.somatika.net
@@ -69,14 +60,12 @@ sources:
       - clan
     base: http://underhound.eu:81/crawl/meta
     logs:
-      - '{0.16,0.17,0.18}/{logfile,milestones}'
-      - '{0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}'
+      - '{0.16,0.17,0.18,0.15,0.14,0.13,0.12,0.11,0.10}/{logfile,milestones}'
 
   - name: ckr
     base: http://kr.dobrazupa.org
     logs:
-      - www/{trunk,0.15,0.13}/{logfile,milestones}
-      - www/0.14/{logfile,milestone}
+      - www/{trunk,0.15,0.14,0.13}/{logfile,milestones}
 
   - name: cwz
     base: http://webzook.net/soup
@@ -89,20 +78,17 @@ sources:
       - cbo
     base: http://crawl.berotato.org/crawl
     logs:
-      - meta/{0.15,0.14,0.13}/{logfile,milestones}
-      - meta/{0.16,0.17,0.18}/{logfile,milestones}
+      - meta/{0.13,0.14,0.15,0.16,0.17,0.18}/{logfile,milestones}
 
   - name: cxc
     base: http://crawl.xtahua.com/crawl/meta
     logs:
-      - '{0.14,0.15}/{logfile,milestones}'
-      - '{0.16,0.17,0.18}/{logfile,milestones}'
+      - '{0.14,0.15,0.16,0.17,0.18}/{logfile,milestones}'
 
   - name: lld
     base: http://lazy-life.ddo.jp/mirror/meta
     logs:
-      - '{0.14}/{logfile,milestones}'
-      - '{0.15,0.16,0.17,0.18}/{logfile,milestones}'
+      - '{0.14,0.15,0.16,0.17,0.18}/{logfile,milestones}'
 
   - name: cpo
     base: https://crawl.project357.org
