@@ -2,13 +2,18 @@ from api import EventList
 import os
 import logging
 import yaml
+
+# for socketio
+import eventlet
+eventlet.monkey_patch
+
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-socketio = SocketIO(app, engineio_logger=True)
+socketio = SocketIO(app, engineio_logger=True, async_mode='eventlet')
 api = Api(app)
 
 SOURCES_DIR = './sources'
@@ -36,6 +41,11 @@ for job in CONFIG['refresh schedule']:
         'coalesce': True
     })
 
+if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':  # don't run again when werkzeug reloads due to files changing
+    sched = APScheduler()
+    sched.init_app(app)
+    sched.start()
+
 @app.route('/')
 def hello_world():
     return """A PubSub utility for crawl milestones<br/>
@@ -48,7 +58,7 @@ def socketiotest():
     return r"""
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var socket = io.connect(document.domain + ':' + location.port);
         socket.on('connect', function() {
             document.getElementById("eventlist").innerHTML+="<li>connected</li>";
         });
@@ -65,8 +75,5 @@ def socketiotest():
 api.add_resource(EventList, '/event')
 
 if __name__=='__main__':
-    if os.environ.get('WERKZEUG_RUN_MAIN') != 'true': # don't run again when werkzeug reloads due to files changing
-        sched = APScheduler()
-        sched.init_app(app)
-        sched.start()
-    app.run(host=CONFIG['host'], port=CONFIG['port'])
+    socketio.run(app, host=CONFIG['host'], port=CONFIG['port'])
+    #app.run(host=CONFIG['host'], port=CONFIG['port'], threaded=True)

@@ -4,4 +4,5 @@ Flask-APScheduler
 Flask-RESTful
 Flask-SQLAlchemy
 Flask-SocketIO
+eventlet
 PyYAML
