@@ -22,5 +22,5 @@ class EventList(Resource):
         if args['type']!=None: q = q.filter_by(type=args['type'])
         q = q.offset(offset).limit(limit)
         result = default_ok_result.copy()
-        result.update({'offset': offset, 'results': [e.getDict() for e in q.all()]})
+        result.update({'offset': offset, 'next_offset': offset+q.count(), 'results': [e.getDict() for e in q.all()]})
         return result
