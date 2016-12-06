@@ -1,11 +1,12 @@
+# for socketio
+import gevent
+from gevent import monkey
+monkey.patch_socket()
+
 from api import EventList
 import os
 import logging
 import yaml
-
-# for socketio
-import eventlet
-eventlet.monkey_patch
 
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
@@ -13,7 +14,7 @@ from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-socketio = SocketIO(app, engineio_logger=True, async_mode='eventlet')
+socketio = SocketIO(app, engineio_logger=True, async_mode='gevent')
 api = Api(app)
 
 SOURCES_DIR = './sources'
