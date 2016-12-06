@@ -22,7 +22,7 @@ def refresh(sources_file, sources_dir, socketio):
             if not src.is_file():
                 logging.debug('scanning {} files'.format(src.name))
                 for file in os.scandir(src.path):
-                    if file.is_file() and not file.startswith('.'):
+                    if file.is_file() and not file.name.startswith('.'):
                         logging.debug(file.path)
 
                         logfile = sess.query(Logfile).get(file.path)
