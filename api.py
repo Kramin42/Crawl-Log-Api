@@ -24,11 +24,11 @@ class EventList(Resource):
         with orm.get_session() as sess:
             q = sess.query(Event)
             if args['type']!=None: q = q.filter_by(type=args['type'])
-            q = q.filter(Event.id > offset)
+            q = q.filter(Event.id >= offset)
             q = q.limit(limit)
             result = default_ok_result.copy()
             es = q.all()
             logger.debug('queried db in {} seconds.'.format(time.time()-t_i))
-            result.update({'offset': offset, 'next_offset': offset+q.count(), 'results': [e.getDict() for e in es]})
+            result.update({'offset': offset, 'next_offset': (es[-1].id if len(es)>0 else offset), 'results': [e.getDict() for e in es]})
         logger.debug('done in {} seconds.'.format(time.time() - t_i))
         return result
