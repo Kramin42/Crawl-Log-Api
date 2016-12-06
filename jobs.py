@@ -11,6 +11,7 @@ import utils
 def refresh(sources_file, sources_dir, socketio):
     t_i = time.time()
     source_urls = sources.source_urls(sources_file)
+    source_data = sources.source_data(sources_file)
 
     sources.download_sources(sources_file, sources_dir)
 
@@ -19,10 +20,11 @@ def refresh(sources_file, sources_dir, socketio):
 
     with orm.get_session() as sess:
         for src in os.scandir(sources_dir):
-            if not src.is_file():
-                logging.debug('scanning {} files'.format(src.name))
+            if not src.is_file() and src.name in source_data:
+                expected_files = [sources.url_to_filename(x) for x in source_data[src.name]]
+                logging.debug('scanning {} files, expect [{}]'.format(src.name, ','.join(expected_files)))
                 for file in os.scandir(src.path):
-                    if file.is_file() and not file.name.startswith('.'):
+                    if file.is_file() and file.name in expected_files:
                         logging.debug(file.path)
 
                         logfile = sess.query(Logfile).get(file.path)
