@@ -22,7 +22,7 @@ def refresh(sources_file, sources_dir, socketio):
             if not src.is_file():
                 logging.debug('scanning {} files'.format(src.name))
                 for file in os.scandir(src.path):
-                    if file.is_file():
+                    if file.is_file() and not file.startswith('.'):
                         logging.debug(file.path)
 
                         logfile = sess.query(Logfile).get(file.path)
@@ -30,13 +30,13 @@ def refresh(sources_file, sources_dir, socketio):
                             logfile = Logfile(path=file.path, offset=0)
                             sess.add(logfile)
 
-                        with open(logfile.path) as f:
+                        with open(logfile.path, 'rb') as f:
                             logging.debug('offset: {}'.format(logfile.offset))
                             f.seek(logfile.offset)
                             iter=0
                             for line in f:
                                 try:
-                                    data = utils.logline_to_dict(line)
+                                    data = utils.logline_to_dict(line.decode())
                                     if not ('type' in data and data['type'] == 'crash'):
                                         if 'milestone' in data:
                                             event = Event(type=EventType.milestone,
