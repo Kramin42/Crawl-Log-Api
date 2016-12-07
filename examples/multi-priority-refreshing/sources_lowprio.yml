@@ -98,4 +98,4 @@ sources:
   - name: cjr
     base: https://crawl.jorgrun.rocks/meta
     logs:
-      - '{0.17,0.18,}/{milestones,logfile}'
+      - '{0.17,0.18}/{milestones,logfile}'
