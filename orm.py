@@ -26,18 +26,16 @@ class Event(Base):
     data = Column(Text, nullable=False)
     time = Column(DateTime, nullable=False)
     src_abbr = Column(String(10), nullable=False)
-    src_url = Column(String(1000), nullable=False)
 
     def __repr__(self):
-        return "<Event(id={event.id}, type={event.type}, time={event.time}, src_abbr={event.src_abbr}, src_url={event.src_url}, data={event.data})>".format(event=self)
+        return "<Event(id={event.id}, type={event.type}, time={event.time}, src_abbr={event.src_abbr}, data={event.data})>".format(event=self)
 
     def getDict(self):
         return {'id': self.id,
                 'type': self.type.value,
                 'data': json.loads(self.data),
                 'time': timegm(self.time.timetuple()),
-                'src_abbr': self.src_abbr,
-                'src_url': self.src_url}
+                'src_abbr': self.src_abbr}
 
 class Logfile(Base):
     __tablename__ = 'logfile'

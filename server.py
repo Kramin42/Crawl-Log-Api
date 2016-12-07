@@ -18,6 +18,7 @@ socketio = SocketIO(app, engineio_logger=True, async_mode='gevent')
 api = Api(app)
 
 SOURCES_DIR = './sources'
+STATIC_SOURCES_DIR = './static_sources'
 CONFIG_FILE = 'config.yml'
 if not os.path.isfile(CONFIG_FILE):
     CONFIG_FILE = 'config_default.yml'
@@ -41,6 +42,14 @@ for job in CONFIG['refresh schedule']:
         'max_instances': 1,
         'coalesce': True
     })
+
+# update static sources
+app.config['JOBS'].append({
+    'id': 'refresh static',
+    'func': 'jobs:refresh_static',
+    'args': (STATIC_SOURCES_DIR,),
+    'max_instances': 1
+})
 
 if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':  # don't run again when werkzeug reloads due to files changing
     sched = APScheduler()
