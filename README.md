@@ -1,4 +1,4 @@
-# Crawl-PubSub
+# Crawl-Log-Api
 
 ## Running
 Runs on Python 3.5, install requirements with:
