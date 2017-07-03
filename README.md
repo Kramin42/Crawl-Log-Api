@@ -28,12 +28,15 @@ The API has one endpoint, `/event`, with optional parameters:
 * `limit=<int>`: number of events to return
 * `offset=<int>`: event number to start at (returns the `limit` events after `offset`)
 * `type=<milestone|game>`: filters to a specific event type
+* `src=<src_abbr>`: filters to a specific server
+* `reverse`: Returns entries from the most recent. `offset` will be ignored when reverse is used.
 
 A maximum of 1000 events is returned, regardless of `limit`.
 
 e.g.
 
     /event?type=game&offset=300&limit=100
+    /event?src=cpo&reverse
 
 ## Realtime Events
 Connect to the server with socket.io to receive data of new milestones in reatime.
