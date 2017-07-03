@@ -5,4 +5,5 @@
 
 cd /app/pubsub
 . ./venv/bin/activate
-exec python server.py
+python server.py
+exit 0

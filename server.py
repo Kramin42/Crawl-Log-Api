@@ -14,7 +14,7 @@ from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 
 app = Flask(__name__)
-socketio = SocketIO(app, engineio_logger=True, async_mode='gevent')
+socketio = SocketIO(app, engineio_logger=False, async_mode='gevent')
 api = Api(app)
 
 SOURCES_DIR = './sources'

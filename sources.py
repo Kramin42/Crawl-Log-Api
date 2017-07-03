@@ -92,6 +92,7 @@ def download_source_files(urls: Sequence, dest: str) -> None:
         cmdline = shlex.split(
             WGET_SOURCE_CMDLINE.format(
                 outfile=destfile, url=url))
+        logging.debug("Executing subprocess: {}".format(cmdline))
         p = subprocess.run(cmdline,
                            stdout=subprocess.PIPE,
                            stderr=subprocess.PIPE)
